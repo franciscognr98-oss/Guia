@@ -1,543 +1,118 @@
-
 import streamlit as st
-import html
 
-st.set_page_config(
-    page_title="Guía",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="Guía", page_icon="🧭", layout="wide")
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-:root {
-    --navy: #102A43;
-    --blue: #246BCE;
-    --blue-dark: #174F9C;
-    --pale: #EAF3FC;
-    --line: #D7E2EE;
-    --muted: #61758A;
-}
-
-html, body, [data-testid="stAppViewContainer"] {
-    background: #F3F6FA;
-    color: var(--navy);
-    font-family: Inter, sans-serif;
-}
-
-[data-testid="stHeader"] {
-    background: #F3F6FA;
-}
-
-.block-container {
-    max-width: 1120px;
-    padding: 2rem 2rem 4rem;
-}
-
-h1, h2, h3, p, label {
-    color: var(--navy);
-}
-
-h1 {
-    font-size: 2rem;
-    font-weight: 800;
-}
-
-.panel {
-    background: white;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 22px 26px;
-    margin: 18px 0;
-    box-shadow: 0 3px 12px rgba(16,42,67,.035);
-}
-
-.eyebrow {
-    font-size: .76rem;
-    font-weight: 800;
-    letter-spacing: .09em;
-    color: var(--blue);
-    margin-bottom: 8px;
-}
-
-.instruction {
-    font-size: 1rem;
-    line-height: 1.65;
-    color: #243B53;
-}
-
-.result {
-    background: #E8F1FB;
-    border: 1px solid #B8D0EA;
-    border-left: 5px solid var(--blue);
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 18px 0;
-    color: var(--navy);
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
-.result .tag {
-    font-size: .72rem;
-    font-weight: 800;
-    letter-spacing: .1em;
-    color: var(--blue);
-    margin-bottom: 5px;
-}
-
-.result p {
-    margin: 0;
-    color: var(--navy);
-    font-weight: 600;
-}
-
-div[data-testid="stRadio"] > label {
-    font-weight: 700;
-    color: var(--navy);
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] {
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] label {
-    background: white;
-    border: 1.5px solid #C9D7E6;
-    border-radius: 11px;
-    padding: 11px 18px;
-    margin: 0;
-    min-height: 46px;
-    cursor: pointer;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] label:hover {
-    border-color: var(--blue);
-    background: #F0F6FD;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) {
-    background: #E7F0FB;
-    border: 2px solid var(--blue);
-    color: #123B66;
-    font-weight: 700;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] label p {
-    color: inherit;
-    margin: 0;
-}
-
-div[data-testid="stRadio"] div[role="radiogroup"] label > div:first-child {
-    display: none;
-}
-
-div[data-testid="stRadio"] input {
-    display: none;
-}
-
-hr {
-    border-color: var(--line);
-}
+:root{--navy:#102A43;--blue:#246BCE;--pale:#EAF3FC;--line:#D5E1EC;--gray:#627487}
+html,body,[data-testid="stAppViewContainer"]{background:#F5F8FC;color:var(--navy)}
+.block-container{max-width:1050px;padding-top:2rem;padding-bottom:3rem}
+h1,h2,h3,p,label,[data-testid="stMarkdownContainer"]{color:var(--navy)}
+.section-card{background:white;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin:12px 0 18px}
+.step-label{color:var(--blue);font-size:.78rem;font-weight:750;letter-spacing:.06em;margin-bottom:8px}
+.result-card{background:var(--pale);border:1px solid #B9D3EE;border-left:5px solid var(--blue);color:var(--navy);border-radius:12px;padding:18px 20px;margin:18px 0}
+.result-title{color:var(--blue);font-weight:800;margin-bottom:6px}
+div.stButton>button{background:var(--blue);color:white;border:0;border-radius:9px}
+div.stButton>button:hover{background:#174F9C;color:white}
 </style>
 """, unsafe_allow_html=True)
 
-
-def preguntar(texto, opciones, clave):
-    return st.radio(
-        texto,
-        opciones,
-        key=clave,
-        horizontal=True
-    )
-
-
-def panel(titulo, texto=None):
-    contenido = (
-        f'<div class="instruction">{html.escape(texto)}</div>'
-        if texto else ""
-    )
-
-    st.markdown(
-        f"""
-        <div class="panel">
-            <div class="eyebrow">{html.escape(titulo)}</div>
-            {contenido}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+def pregunta(texto, opciones, key):
+    return st.radio(texto, opciones, key=key, horizontal=True)
 
 def resultado(texto):
-    st.markdown(
-        f"""
-        <div class="result">
-            <div class="tag">RESULTADO</div>
-            <p>{html.escape(texto)}</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown(f'<div class="result-card"><div class="result-title">RESULTADO</div>{texto}</div>', unsafe_allow_html=True)
 
-
-# INICIO
+def tarjeta(etiqueta, texto):
+    st.markdown(f'<div class="section-card"><div class="step-label">{etiqueta}</div>{texto}</div>', unsafe_allow_html=True)
 
 st.title("Guía")
+procedimiento = pregunta("¿Qué procedimiento realizas?", ["A) Validación", "B) Barrido"], "procedimiento")
 
-procedimiento = preguntar(
-    "¿Qué procedimiento realizas?",
-    ["A) VALIDACIÓN", "B) BARRIDO"],
-    "procedimiento"
-)
+if procedimiento == "A) Validación":
+    tipo = pregunta("Selecciona el tipo de validación", ["A.1) Validación de red", "A.2) Validación de comercios"], "tipo_validacion")
 
-
-# A) VALIDACIÓN
-
-if procedimiento == "A) VALIDACIÓN":
-
-    tipo = preguntar(
-        "Selecciona el tipo de validación",
-        [
-            "A.1) VALIDACIÓN DE RED",
-            "A.2) VALIDACIÓN DE COMERCIOS"
-        ],
-        "tipo_validacion"
-    )
-
-    # A.1 VALIDACIÓN DE RED
-
-    if tipo == "A.1) VALIDACIÓN DE RED":
-
-        panel(
-            "A.1) VALIDACIÓN DE RED",
-            "Recorre la red en Google Maps y compara con Experience Builder. "
-            "Revisa el histórico de StreetView."
-        )
-
-        streetview = preguntar(
-            "¿Hay StreetView?",
-            ["Sí", "No"],
-            "red_streetview"
-        )
-
+    if tipo == "A.1) Validación de red":
+        tarjeta("A.1) VALIDACIÓN DE RED", "Recorre la red en Google Maps y compárala con Experience Builder. Revisa el histórico de Street View.")
+        streetview = pregunta("¿Hay Street View?", ["Sí", "No"], "red_streetview")
         if streetview == "No":
-
-            tipo_elemento = preguntar(
-                "Selecciona el elemento",
-                [
-                    "Zona sin StreetView",
-                    "Calle sin StreetView"
-                ],
-                "red_elemento_sinstreetview"
-            )
-
-            if tipo_elemento == "Zona sin StreetView":
-                resultado(
-                    "Realizar procedimiento para polígonos sin StreetView."
-                )
-            else:
-                resultado(
-                    "Realizar procedimiento para líneas sin StreetView."
-                )
-
+            elemento = pregunta("¿Qué caso corresponde?", ["Zona sin Street View", "Calle sin Street View"], "red_sin_sv")
+            resultado("Realizar procedimiento para polígonos sin Street View." if elemento == "Zona sin Street View" else "Realizar procedimiento para líneas sin Street View.")
         else:
-
-            patron = preguntar(
-                "¿Observas algún patrón sobre la red?",
-                ["Sí", "No"],
-                "red_patron"
-            )
-
-            if patron == "No":
-
-                panel(
-                    "REVISIÓN DEL HISTÓRICO",
-                    "Verifica el histórico, descarta la presencia de huellas "
-                    "en el pavimento y/o banqueta."
-                )
-
-                resultado(
-                    "Descarta la red si no encontraste indicios de "
-                    "acometidas ocultas o acometidas visibles no levantadas en GIS."
-                )
-
-            else:
-
-                todas = preguntar(
-                    "¿Todas las acometidas que corresponden al patrón "
-                    "aparecen en Experience Builder?",
-                    ["Sí", "No"],
-                    "red_todas"
-                )
-
+            patron = pregunta("¿Observas algún patrón sobre la red?", ["Sí", "No"], "red_patron")
+            if patron == "Sí":
+                todas = pregunta("¿Todas las acometidas que corresponden al patrón aparecen en Experience Builder?", ["Sí", "No"], "red_todas")
                 if todas == "Sí":
-
                     resultado("Se descarta.")
-
                 else:
-
-                    visible = preguntar(
-                        "¿La acometida faltante es visible?",
-                        ["Sí", "No"],
-                        "red_visible"
-                    )
-
+                    visible = pregunta("¿La acometida faltante es visible?", ["Sí", "No"], "red_visible")
                     if visible == "Sí":
-
                         resultado("Pasa a OYM.")
-
                     else:
-
-                        condicion = preguntar(
-                            "¿Qué condición se presenta?",
-                            [
-                                "Algún objeto obstaculiza la visión",
-                                "Hay construcción"
-                            ],
-                            "red_condicion"
-                        )
-
+                        condicion = pregunta("¿Qué condición se presenta?", ["Algún objeto obstaculiza la visión", "Hay construcción"], "red_condicion")
                         if condicion == "Algún objeto obstaculiza la visión":
-
-                            resultado(
-                                "Sin suficiente información y asigna en Workforce."
-                            )
-
+                            resultado("Sin suficiente información. Asigna en Workforce.")
                         else:
-
-                            resultado(
-                                "Realizar procedimiento Experience Builder "
-                                "→ PowerApp → SharePoint → Workforce "
-                                "para redes sin acometidas."
-                            )
-
-
-    # A.2 VALIDACIÓN DE COMERCIOS
+                            resultado("Realizar procedimiento Experience Builder → PowerApp → SharePoint → Workforce para redes sin acometidas.")
+            else:
+                tarjeta("REVISIÓN DEL HISTÓRICO", "Verifica el histórico y descarta la presencia de huellas en el pavimento y/o banqueta.")
+                resultado("Descarta la red si no encontraste indicios de acometidas ocultas o acometidas visibles no levantadas en GIS.")
 
     else:
-
-        panel(
-            "A.2) VALIDACIÓN DE COMERCIOS",
-            "Busca el comercio en Google Maps. "
-            "Revisa el histórico de StreetView."
-        )
-
-        streetview = preguntar(
-            "¿Hay StreetView?",
-            ["Sí", "No"],
-            "comercio_streetview"
-        )
-
+        tarjeta("A.2) VALIDACIÓN DE COMERCIOS", "Busca el comercio en Google Maps. Revisa el histórico de Street View.")
+        streetview = pregunta("¿Hay Street View?", ["Sí", "No"], "comercio_streetview")
         if streetview == "No":
-
-            panel(
-                "REVISIÓN DEL HISTÓRICO",
-                "Verifica el histórico, descarta la presencia de huellas "
-                "en el pavimento y/o banqueta."
-            )
-
-            resultado(
-                "Descarta el comercio si no encontraste indicios de "
-                "acometida oculta o acometida visible no levantada en GIS."
-            )
-
+            caso = pregunta("¿Qué caso corresponde?", ["Zona sin Street View", "Calle sin Street View"], "comercio_sin_sv")
+            resultado("Realizar procedimiento para polígonos sin Street View." if caso == "Zona sin Street View" else "Realizar procedimiento para líneas sin Street View.")
         else:
-
-            acometida = preguntar(
-                "¿Hay acometida?",
-                ["Sí", "No"],
-                "comercio_acometida"
-            )
-
-            if acometida == "No":
-
-                panel(
-                    "REVISIÓN DEL HISTÓRICO",
-                    "Verifica el histórico, descarta la presencia de huellas "
-                    "en el pavimento y/o banqueta."
-                )
-
-                resultado(
-                    "Descarta el comercio si no encontraste indicios de "
-                    "acometida oculta o acometida visible no levantada en GIS."
-                )
-
-            else:
-
-                gis = preguntar(
-                    "¿Está levantada en GIS?",
-                    ["Sí", "No"],
-                    "comercio_gis"
-                )
-
-                if gis == "Sí":
-
+            acometida = pregunta("¿Hay acometida?", ["Sí", "No"], "comercio_acometida")
+            if acometida == "Sí":
+                levantada = pregunta("¿Está levantada en GIS?", ["Sí", "No"], "comercio_gis")
+                if levantada == "Sí":
                     resultado("Se descarta.")
-
                 else:
-
-                    visible = preguntar(
-                        "¿Es visible?",
-                        ["Sí", "No"],
-                        "comercio_visible"
-                    )
-
+                    visible = pregunta("¿Es visible?", ["Sí", "No"], "comercio_visible")
                     if visible == "Sí":
-
-                        resultado(
-                            "Pasa a OYM (Adjunta evidencia)."
-                        )
-
+                        resultado("Pasa a OYM. Adjunta evidencia.")
                     else:
-
-                        condicion = preguntar(
-                            "¿Qué condición se presenta?",
-                            [
-                                "Algún objeto obstaculiza la visión",
-                                "Hay construcción"
-                            ],
-                            "comercio_condicion"
-                        )
-
+                        condicion = pregunta("¿Qué condición se presenta?", ["Algún objeto obstaculiza la visión", "Hay construcción"], "comercio_condicion")
                         if condicion == "Algún objeto obstaculiza la visión":
-
-                            resultado(
-                                "Sin suficiente información "
-                                "(Adjunta evidencia y asigna en Workforce)."
-                            )
-
+                            resultado("Sin suficiente información. Adjunta evidencia y asigna en Workforce.")
                         else:
-
-                            resultado(
-                                "Se confirma. Realizar procedimiento "
-                                "Experience Builder → PowerApp → SharePoint "
-                                "→ Workforce para comercios."
-                            )
-
-
-# B) BARRIDO
+                            resultado("Se confirma. Realizar procedimiento Experience Builder → PowerApp → SharePoint → Workforce para comercios.")
+            else:
+                tarjeta("REVISIÓN DEL HISTÓRICO", "Verifica el histórico y revisa si hay huellas en el pavimento y/o banqueta.")
+                huella = pregunta("¿Hay huella?", ["Sí", "No"], "comercio_huella")
+                if huella == "Sí":
+                    resultado("Realiza el procedimiento Experience Builder → PowerApp → SharePoint → Workforce para comercios.")
+                else:
+                    resultado("Descarta.")
 
 else:
-
-    panel(
-        "B) BARRIDO",
-        "Recorre las calles, únicamente las que tienen red de ENGIE. "
-        "Identifica zonas sin StreetView. Compara lo que observas en "
-        "StreetView de Google Maps con lo que se encuentra en Experience Builder. "
-        "Identifica patrones en la ubicación de las acometidas y revisa "
-        "cuidadosamente el histórico de StreetView. Revisa el pavimento "
-        "para identificar huellas por instalación."
-    )
-
-    streetview = preguntar(
-        "¿La zona que recorriste tiene StreetView?",
-        ["Sí", "No"],
-        "barrido_streetview"
-    )
-
+    tarjeta("B) BARRIDO", "Recorre las calles, únicamente las que tienen red de ENGIE. Identifica zonas sin Street View. Compara lo que observas en Street View de Google Maps con lo que se encuentra en Experience Builder. Identifica patrones en la ubicación de las acometidas y revisa cuidadosamente el histórico de Street View. Revisa el pavimento para identificar huellas por instalación.")
+    streetview = pregunta("¿La zona que recorriste tiene Street View?", ["Sí", "No"], "barrido_streetview")
     if streetview == "No":
-
-        tipo_elemento = preguntar(
-            "Selecciona el elemento",
-            [
-                "Zona sin StreetView",
-                "Calle sin StreetView"
-            ],
-            "barrido_elemento_sinstreetview"
-        )
-
-        if tipo_elemento == "Zona sin StreetView":
-
-            resultado(
-                "Realizar procedimiento para polígonos sin StreetView."
-            )
-
-        else:
-
-            resultado(
-                "Realizar procedimiento para líneas sin StreetView."
-            )
-
+        caso = pregunta("¿Qué caso corresponde?", ["Zona sin Street View", "Calle sin Street View"], "barrido_sin_sv")
+        resultado("Realizar procedimiento para polígonos sin Street View." if caso == "Zona sin Street View" else "Realizar procedimiento para líneas sin Street View.")
     else:
-
-        patron = preguntar(
-            "¿Observaste algún patrón?",
-            ["Sí", "No"],
-            "barrido_patron"
-        )
-
-        if patron == "No":
-
-            panel(
-                "REVISIÓN DEL HISTÓRICO",
-                "Verifica el histórico, descarta la presencia de huellas "
-                "en el pavimento y/o banqueta."
-            )
-
-            resultado(
-                "Traza una línea de inspección y realiza el procedimiento "
-                "para zonas barridas si no encontraste indicios de acometidas "
-                "ocultas o acometidas visibles no levantadas en GIS."
-            )
-
-        else:
-
-            todas = preguntar(
-                "¿Todas las acometidas que corresponden al patrón "
-                "aparecen en Experience Builder?",
-                ["Sí", "No"],
-                "barrido_todas"
-            )
-
+        patron = pregunta("¿Observaste algún patrón?", ["Sí", "No"], "barrido_patron")
+        if patron == "Sí":
+            todas = pregunta("¿Todas las acometidas que corresponden al patrón aparecen en Experience Builder?", ["Sí", "No"], "barrido_todas")
             if todas == "Sí":
-
-                resultado(
-                    "Traza una línea de inspección "
-                    "(Procedimiento para reporte de zonas barridas)."
-                )
-
+                resultado("Traza una línea de inspección (procedimiento para reporte de zonas barridas).")
             else:
-
-                visible = preguntar(
-                    "¿La acometida faltante es visible?",
-                    ["Sí", "No"],
-                    "barrido_visible"
-                )
-
+                visible = pregunta("¿La acometida faltante es visible?", ["Sí", "No"], "barrido_visible")
                 if visible == "Sí":
-
-                    resultado(
-                        "Traza línea de inspección para pasar a OYM."
-                    )
-
+                    resultado("Traza una línea de inspección para pasar a OYM.")
                 else:
-
-                    condicion = preguntar(
-                        "¿Qué condición se presenta?",
-                        [
-                            "Algún objeto obstaculiza la visión",
-                            "Hay construcción"
-                        ],
-                        "barrido_condicion"
-                    )
-
+                    condicion = pregunta("¿Qué condición se presenta?", ["Algún objeto obstaculiza la visión", "Hay construcción"], "barrido_condicion")
                     if condicion == "Algún objeto obstaculiza la visión":
-
-                        resultado(
-                            "Traza línea de inspección como Sin suficiente "
-                            "información y asigna en Workforce."
-                        )
-
+                        resultado("Traza una línea de inspección como Sin suficiente información y asigna en Workforce.")
                     else:
+                        resultado("Traza una línea de inspección. Realizar procedimiento Experience Builder → PowerApp → SharePoint → Workforce para líneas de inspección.")
+        else:
+            tarjeta("REVISIÓN DEL HISTÓRICO", "Verifica el histórico y descarta la presencia de huellas en el pavimento y/o banqueta.")
+            resultado("Traza una línea de inspección y realiza el procedimiento para zonas barridas si no encontraste indicios de acometidas ocultas o acometidas visibles no levantadas en GIS.")
 
-                        resultado(
-                            "Traza línea de inspección. Realizar procedimiento "
-                            "Experience Builder → PowerApp → SharePoint "
-                            "→ Workforce para líneas de inspección."
-                        )
+if st.button("Reiniciar guía"):
+    st.rerun()
